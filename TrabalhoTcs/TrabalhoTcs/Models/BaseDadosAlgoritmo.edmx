@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BaseDadosModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Empresa">
+          <Key>
+            <PropertyRef Name="IDEmpresa" />
+          </Key>
+          <Property Name="IDEmpresa" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOME" Type="varchar" MaxLength="75" Nullable="false" />
+          <Property Name="ENDERECO" Type="varchar" MaxLength="75" Nullable="false" />
+          <Property Name="INICIOATENDIMENTO" Type="time" Precision="7" Nullable="false" />
+          <Property Name="FIMATENDIMENTO" Type="time" Precision="7" Nullable="false" />
+          <Property Name="TEMPOVISITACAO" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FUNCIONARIO">
+          <Key>
+            <PropertyRef Name="IDFuncionario" />
+          </Key>
+          <Property Name="IDFuncionario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nome" Type="varchar" MaxLength="75" Nullable="false" />
+          <Property Name="ENDERECO" Type="varchar" MaxLength="75" Nullable="false" />
+          <Property Name="JORNADATRABALHO" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rota">
+          <Key>
+            <PropertyRef Name="IDRota" />
+          </Key>
+          <Property Name="IDRota" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDEmpresa" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_Empresas">
+          <End Role="Empresa" Type="Self.Empresa" Multiplicity="1" />
+          <End Role="Rota" Type="Self.Rota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresa">
+              <PropertyRef Name="IDEmpresa" />
+            </Principal>
+            <Dependent Role="Rota">
+              <PropertyRef Name="IDEmpresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BaseDadosModelStoreContainer">
+          <EntitySet Name="Empresa" EntityType="Self.Empresa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FUNCIONARIO" EntityType="Self.FUNCIONARIO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rota" EntityType="Self.Rota" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_Empresas" Association="Self.fk_Empresas">
+            <End Role="Empresa" EntitySet="Empresa" />
+            <End Role="Rota" EntitySet="Rota" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BaseDadosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Empresa">
+          <Key>
+            <PropertyRef Name="IDEmpresa" />
+          </Key>
+          <Property Name="IDEmpresa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOME" Type="String" MaxLength="75" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ENDERECO" Type="String" MaxLength="75" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="INICIOATENDIMENTO" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="FIMATENDIMENTO" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="TEMPOVISITACAO" Type="Time" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Rota" Relationship="Self.fk_Empresas" FromRole="Empresa" ToRole="Rota" />
+        </EntityType>
+        <EntityType Name="FUNCIONARIO">
+          <Key>
+            <PropertyRef Name="IDFuncionario" />
+          </Key>
+          <Property Name="IDFuncionario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" MaxLength="75" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ENDERECO" Type="String" MaxLength="75" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="JORNADATRABALHO" Type="Time" Nullable="false" Precision="7" />
+        </EntityType>
+        <EntityType Name="Rota">
+          <Key>
+            <PropertyRef Name="IDRota" />
+          </Key>
+          <Property Name="IDRota" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDEmpresa" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Empresa" Relationship="Self.fk_Empresas" FromRole="Rota" ToRole="Empresa" />
+        </EntityType>
+        <Association Name="fk_Empresas">
+          <End Role="Empresa" Type="Self.Empresa" Multiplicity="1" />
+          <End Role="Rota" Type="Self.Rota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresa">
+              <PropertyRef Name="IDEmpresa" />
+            </Principal>
+            <Dependent Role="Rota">
+              <PropertyRef Name="IDEmpresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BaseDadosEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Empresa" EntityType="Self.Empresa" />
+          <EntitySet Name="FUNCIONARIO" EntityType="Self.FUNCIONARIO" />
+          <EntitySet Name="Rota" EntityType="Self.Rota" />
+          <AssociationSet Name="fk_Empresas" Association="Self.fk_Empresas">
+            <End Role="Empresa" EntitySet="Empresa" />
+            <End Role="Rota" EntitySet="Rota" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BaseDadosModelStoreContainer" CdmEntityContainer="BaseDadosEntities">
+          <EntitySetMapping Name="Empresa">
+            <EntityTypeMapping TypeName="BaseDadosModel.Empresa">
+              <MappingFragment StoreEntitySet="Empresa">
+                <ScalarProperty Name="IDEmpresa" ColumnName="IDEmpresa" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="ENDERECO" ColumnName="ENDERECO" />
+                <ScalarProperty Name="INICIOATENDIMENTO" ColumnName="INICIOATENDIMENTO" />
+                <ScalarProperty Name="FIMATENDIMENTO" ColumnName="FIMATENDIMENTO" />
+                <ScalarProperty Name="TEMPOVISITACAO" ColumnName="TEMPOVISITACAO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FUNCIONARIO">
+            <EntityTypeMapping TypeName="BaseDadosModel.FUNCIONARIO">
+              <MappingFragment StoreEntitySet="FUNCIONARIO">
+                <ScalarProperty Name="IDFuncionario" ColumnName="IDFuncionario" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="ENDERECO" ColumnName="ENDERECO" />
+                <ScalarProperty Name="JORNADATRABALHO" ColumnName="JORNADATRABALHO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rota">
+            <EntityTypeMapping TypeName="BaseDadosModel.Rota">
+              <MappingFragment StoreEntitySet="Rota">
+                <ScalarProperty Name="IDRota" ColumnName="IDRota" />
+                <ScalarProperty Name="IDEmpresa" ColumnName="IDEmpresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
