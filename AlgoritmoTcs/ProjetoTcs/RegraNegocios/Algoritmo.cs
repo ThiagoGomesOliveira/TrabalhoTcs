@@ -11,6 +11,8 @@ namespace ProjetoTcs.RegraNegocios
     {
         private List<Destino> destinos = new List<Destino>();
         private TimeSpan TempoMaroto;
+        private Destino mUltimoEndereco;
+
         public void VerificarDestino()
         {
             RotaRepository repositorioRota = new RotaRepository();
@@ -59,6 +61,12 @@ namespace ProjetoTcs.RegraNegocios
             return TimeSpan.Zero;
         }
 
+        //public Fornecedor UpdateFornecedor(Fornecedor fornecedor)
+        //{
+        //    this.fornecedores[this.fornecedores.IndexOf(fornecedor)] = fornecedor;
+        //    return fornecedor;
+        //}
+
 
 
         public Funcionario Destino(int idFuncionario)
@@ -86,16 +94,61 @@ namespace ProjetoTcs.RegraNegocios
                     var jornada = ExisteTempoJornadaFuncionario(d.Tempo);
                     if (jornada)
                     {
-                        destinos.Add(d);
+                        var pdvPossivel = VerificarHorarioAtendimentoPdv(t, funcionario);
+                        if (pdvPossivel != null)
+                        {
+                            destinos.Add(d);
+                        }
                     }
                 }
             }
-            var a = destinos.OrderBy(x => x.Tempo).ToList();
-            var teste = VerificarHorarioAtendimentoPdv(a, funcionario);
+
+            var lista = OrdenaRemoveLista(pdvFuncionarios, funcionario);
 
 
-            AdicionarRota(funcionario.IDFuncionario, teste.IdPdvFuncionario);
+            while (lista.Count ==0)
+            {
+                VerificarEndereco(mUltimoEndereco, pdvFuncionarios, funcionario);
+                lista = OrdenaRemoveLista(lista, funcionario);
+            }
+
+
+
+            //var teste = VerificarHorarioAtendimentoPdv(a, funcionario);
+            //AdicionarRota(funcionario.IDFuncionario, teste.IdPdvFuncionario);
+
+
         }
+
+        public List<PdvFuncionario> OrdenaRemoveLista(List<PdvFuncionario> lista, Funcionario funcionario)
+        {
+            var a = destinos.OrderBy(x => x.Tempo).ToList();
+            mUltimoEndereco = a[0];
+            AdicionarRota(funcionario.IDFuncionario, mUltimoEndereco.PdvFuncionario.IdPdvFuncionario);
+            lista.Remove(mUltimoEndereco.PdvFuncionario);
+            destinos.Clear();
+            return lista;
+        }
+
+        public List<Destino> VerificarEndereco(Destino pdvDestinoMelhor, List<PdvFuncionario> listaPdvFuncionario, Funcionario funcionario)
+        {
+
+            foreach (var t in listaPdvFuncionario)
+            {
+                Destino d = new Destino();
+                d.PdvFuncionario = t;
+                d.Tempo = Distance(DePara(pdvDestinoMelhor.PdvFuncionario.IdEndereco), DePara(t.IdEndereco)) + TempoVisita(DePara(t.IdEndereco));
+
+                var pdvPossivel = VerificarHorarioAtendimentoPdv(t, funcionario);
+                if (pdvPossivel != null)
+                {
+                    destinos.Add(d);
+                }
+
+            }
+            return destinos;
+        }
+
 
         public Boolean ExisteTempoJornadaFuncionario(TimeSpan tempo)
         {
@@ -116,18 +169,15 @@ namespace ProjetoTcs.RegraNegocios
 
             rota.IDFuncionario = IdFuncionario;
             rota.IDPdvFuncionario = IdPdvFuncionario;
-            //  rotaRepository.Save(rota);
+            //rotaRepository.Save(rota);
         }
 
 
-        public PdvFuncionario VerificarHorarioAtendimentoPdv(List<Destino> Listdestino, Funcionario funcionario)
+        public PdvFuncionario VerificarHorarioAtendimentoPdv(PdvFuncionario destino, Funcionario funcionario)
         {
-            foreach (var item in Listdestino)
+            if (destino.InicioAtendimento <= funcionario.InicioJornada)
             {
-                if (item.PdvFuncionario.InicioAtendimento <= funcionario.InicioJornada)
-                {
-                    return item.PdvFuncionario;
-                }
+                return destino;
             }
             return null;
         }
