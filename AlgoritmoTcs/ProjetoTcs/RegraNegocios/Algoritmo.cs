@@ -106,7 +106,7 @@ namespace ProjetoTcs.RegraNegocios
             var lista = OrdenaRemoveLista(pdvFuncionarios, funcionario);
 
 
-            while (lista.Count ==0)
+            while (lista.FirstOrDefault() != null)
             {
                 VerificarEndereco(mUltimoEndereco, pdvFuncionarios, funcionario);
                 lista = OrdenaRemoveLista(lista, funcionario);
@@ -114,7 +114,7 @@ namespace ProjetoTcs.RegraNegocios
 
 
 
-            //var teste = VerificarHorarioAtendimentoPdv(a, funcionario);
+           // var teste = VerificarHorarioAtendimentoPdv(d, funcionario);
             //AdicionarRota(funcionario.IDFuncionario, teste.IdPdvFuncionario);
 
 
@@ -169,7 +169,7 @@ namespace ProjetoTcs.RegraNegocios
 
             rota.IDFuncionario = IdFuncionario;
             rota.IDPdvFuncionario = IdPdvFuncionario;
-            //rotaRepository.Save(rota);
+            rotaRepository.Save(rota);
         }
 
 
