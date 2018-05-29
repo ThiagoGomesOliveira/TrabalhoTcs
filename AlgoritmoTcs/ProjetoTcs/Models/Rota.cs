@@ -10,6 +10,7 @@ namespace ProjetoTcs.Models
         public int IDRota { get; set; }
         public int IDPdvFuncionario { get; set; }
         public int IDFuncionario { get; set; }
+        public DateTime DataAtendimento { get; set; }
 
 
     }

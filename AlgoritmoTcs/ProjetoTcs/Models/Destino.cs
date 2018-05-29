@@ -9,6 +9,7 @@ namespace ProjetoTcs.Models
     {
         public PdvFuncionario PdvFuncionario { get; set; }
         public TimeSpan Tempo { get; set; }
+        public DateTime Data { get; set; }
 
 
     }

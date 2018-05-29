@@ -17,7 +17,8 @@ namespace ProjetoTcs.Controllers
         {
             EnderecoRepository e = new EnderecoRepository();
             Algoritmo algoritmo = new Algoritmo();
-            algoritmo.VerificarDestino();
+            
+           algoritmo.VerificarDestino();
             return View(repository.GetAll());
         }
 

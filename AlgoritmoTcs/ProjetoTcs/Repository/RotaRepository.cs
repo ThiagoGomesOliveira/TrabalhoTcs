@@ -54,7 +54,7 @@ namespace ProjetoTcs.Repository
 
         public override List<Rota> GetAll()
         {
-            string sql = @"SELECT  IDROTA,  IDPDVFUNCIONARIO, IDFUNCIONARIO
+            string sql = @"SELECT  IDROTA,  IDPDVFUNCIONARIO, IDFUNCIONARIO,DATAATENDIMENTO
                              FROM  ROTA";
             using (var context = new SqlConnection(StringConnection))
             {
@@ -73,6 +73,7 @@ namespace ProjetoTcs.Repository
                             e.IDRota = (int)reader["IDROTA"];
                             e.IDPdvFuncionario = (int)reader["IDPDVFUNCIONARIO"];
                             e.IDFuncionario = (int)reader["IDFUNCIONARIO"];
+                            e.DataAtendimento = (DateTime)reader["DATAATENDIMENTO"];
                             lista.Add(e);
                         }
                     }
@@ -90,7 +91,7 @@ namespace ProjetoTcs.Repository
         {
             using (var context = new SqlConnection(StringConnection))
             {
-                string sql = @"SELECT IDROTA,  IDPDVFUNCIONARIO, IDFUNCIONARIO
+                string sql = @"SELECT IDROTA,  IDPDVFUNCIONARIO, IDFUNCIONARIO ,DATAATENDIMENTO
                                  FROM ROTA
                                 WHERE IDROTA = @ID";
                 SqlCommand cmd = new SqlCommand(sql, context);
@@ -109,6 +110,7 @@ namespace ProjetoTcs.Repository
                                 e.IDRota = (int)reader["IDROTA"];
                                 e.IDPdvFuncionario =(int) reader["IDPDVFUNCIONARIO"];
                                 e.IDFuncionario = (int)reader["IDFUNCIONARIO"];
+                                e.DataAtendimento = (DateTime)reader["DATAATENDIMENTO"];
                             }
                         }
                     }
@@ -126,11 +128,12 @@ namespace ProjetoTcs.Repository
         {
             using (var context = new SqlConnection(StringConnection))
             {
-                string sql = @"INSERT INTO ROTA (IDPDVFUNCIONARIO,IDFUNCIONARIO) 
-                               VALUES (@IDPDVFUNCIONARIO,@IDFUNCIONARIO)";
+                string sql = @"INSERT INTO ROTA (IDPDVFUNCIONARIO,IDFUNCIONARIO,DATAATENDIMENTO) 
+                               VALUES (@IDPDVFUNCIONARIO,@IDFUNCIONARIO,@DATAATENDIMENTO)";
                 SqlCommand cmd = new SqlCommand(sql, context);
                 cmd.Parameters.AddWithValue("@IDPDVFUNCIONARIO",entity.IDPdvFuncionario);
                 cmd.Parameters.AddWithValue("@IDFUNCIONARIO", entity.IDFuncionario);
+                cmd.Parameters.AddWithValue("@DATAATENDIMENTO", entity.DataAtendimento);
                 try
                 {
                     context.Open();
@@ -151,11 +154,13 @@ namespace ProjetoTcs.Repository
                 string sql = @"UPDATE ROTA 
                                   SET IDPDVFUNCIONARIO = @IDPDVFUNCIONARIO , 
                                       IDFUNCIONARIO = @IDFUNCIONARIO ,
+                                      DATAATENDIMENTO = @DATAATENDIMENTO
                                 WHERE ROTA = @ID";
                 SqlCommand cmd = new SqlCommand(sql, context);
                 cmd.Parameters.AddWithValue("@ID", entity.IDRota);
                 cmd.Parameters.AddWithValue("@IDPDVFUNCIONARIO", entity.IDPdvFuncionario);
                 cmd.Parameters.AddWithValue("@IDFUNCIONARIO", entity.IDPdvFuncionario);
+                cmd.Parameters.AddWithValue("@DATAATENDIMENTO",entity.DataAtendimento);
                 try
                 {
                     context.Open();

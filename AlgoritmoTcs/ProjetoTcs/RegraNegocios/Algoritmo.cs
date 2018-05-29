@@ -12,9 +12,11 @@ namespace ProjetoTcs.RegraNegocios
         private List<Destino> destinos = new List<Destino>();
         private TimeSpan TempoMaroto;
         private Destino mUltimoEndereco;
+        private DateTime data = DateTime.Today;
 
         public void VerificarDestino()
         {
+           
             RotaRepository repositorioRota = new RotaRepository();
             Funcionario funcionario = new Funcionario();
             PdvFuncionarioRepository pdvFuncionarioRepository = new PdvFuncionarioRepository();
@@ -81,7 +83,7 @@ namespace ProjetoTcs.RegraNegocios
         public void PopularDestino(List<PdvFuncionario> pdvFuncionarios, Funcionario funcionario)
         {
             List<Rota> rotas = new List<Rota>();
-
+            
             if (funcionario != null)
             {
                 var idfuncionario = funcionario.IDEndereco;
@@ -91,6 +93,7 @@ namespace ProjetoTcs.RegraNegocios
                     Destino d = new Destino();
                     d.PdvFuncionario = t;
                     d.Tempo = Distance(DePara(idfuncionario), DePara(t.IdEndereco)) + TempoVisita(DePara(t.IdEndereco));
+                    d.Data = data;
                     var jornada = ExisteTempoJornadaFuncionario(d.Tempo);
                     if (jornada)
                     {
@@ -105,32 +108,36 @@ namespace ProjetoTcs.RegraNegocios
 
             var lista = OrdenaRemoveLista(pdvFuncionarios, funcionario);
 
-
-            while (lista.FirstOrDefault() != null)
-            {
-                VerificarEndereco(mUltimoEndereco, pdvFuncionarios, funcionario);
-                lista = OrdenaRemoveLista(lista, funcionario);
-            }
-
-
-
-           // var teste = VerificarHorarioAtendimentoPdv(d, funcionario);
-            //AdicionarRota(funcionario.IDFuncionario, teste.IdPdvFuncionario);
-
-
+          
+                while (lista.FirstOrDefault() != null)
+                {
+                    VerificarEndereco(mUltimoEndereco, pdvFuncionarios, funcionario, data);
+                    lista = OrdenaRemoveLista(lista, funcionario);
+                }
+                data = data.AddDays(1);
+                PopularDestino(pdvFuncionarios, funcionario);
+            
+           
+          
         }
 
         public List<PdvFuncionario> OrdenaRemoveLista(List<PdvFuncionario> lista, Funcionario funcionario)
         {
+            
             var a = destinos.OrderBy(x => x.Tempo).ToList();
-            mUltimoEndereco = a[0];
-            AdicionarRota(funcionario.IDFuncionario, mUltimoEndereco.PdvFuncionario.IdPdvFuncionario);
-            lista.Remove(mUltimoEndereco.PdvFuncionario);
-            destinos.Clear();
-            return lista;
+            if (a.FirstOrDefault() != null)
+            {
+                mUltimoEndereco = a[0];
+                AdicionarRota(funcionario.IDFuncionario, mUltimoEndereco.PdvFuncionario.IdPdvFuncionario, mUltimoEndereco.Data);
+                lista.Remove(mUltimoEndereco.PdvFuncionario);
+                destinos.Clear();
+                return lista;
+            }
+          
+            return null;
         }
 
-        public List<Destino> VerificarEndereco(Destino pdvDestinoMelhor, List<PdvFuncionario> listaPdvFuncionario, Funcionario funcionario)
+        public List<Destino> VerificarEndereco(Destino pdvDestinoMelhor, List<PdvFuncionario> listaPdvFuncionario, Funcionario funcionario,DateTime data)
         {
 
             foreach (var t in listaPdvFuncionario)
@@ -138,7 +145,7 @@ namespace ProjetoTcs.RegraNegocios
                 Destino d = new Destino();
                 d.PdvFuncionario = t;
                 d.Tempo = Distance(DePara(pdvDestinoMelhor.PdvFuncionario.IdEndereco), DePara(t.IdEndereco)) + TempoVisita(DePara(t.IdEndereco));
-
+                d.Data = data;
                 var pdvPossivel = VerificarHorarioAtendimentoPdv(t, funcionario);
                 if (pdvPossivel != null)
                 {
@@ -162,13 +169,13 @@ namespace ProjetoTcs.RegraNegocios
             return false;
         }
 
-        public void AdicionarRota(int IdFuncionario, int IdPdvFuncionario)
+        public void AdicionarRota(int IdFuncionario, int IdPdvFuncionario,DateTime data)
         {
             Rota rota = new Rota();
             RotaRepository rotaRepository = new RotaRepository();
-
             rota.IDFuncionario = IdFuncionario;
             rota.IDPdvFuncionario = IdPdvFuncionario;
+            rota.DataAtendimento = data;
             rotaRepository.Save(rota);
         }
 
