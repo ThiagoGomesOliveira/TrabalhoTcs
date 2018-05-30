@@ -16,19 +16,23 @@ namespace ProjetoTcs.RegraNegocios
 
         public void VerificarDestino()
         {
-           
+
             RotaRepository repositorioRota = new RotaRepository();
             Funcionario funcionario = new Funcionario();
             PdvFuncionarioRepository pdvFuncionarioRepository = new PdvFuncionarioRepository();
+            FuncionarioRepository funcRepositorio = new FuncionarioRepository();
 
-            var lista = repositorioRota.GetAll();
-            if (lista == null || lista.Count <= 0)
+            var listaFuncionario = funcRepositorio.GetAll();
+
+            foreach (var item in listaFuncionario)
             {
-                funcionario = Destino(1);
-                PopularDestino(pdvFuncionarioRepository.GetPdvsId(funcionario.IDFuncionario), funcionario);
+                var lista = pdvFuncionarioRepository.GetPdvsId(item.IDFuncionario);
+                if (lista.Count > 0)
+                {
+                    funcionario = Destino(item.IDFuncionario);
+                    PopularDestino(pdvFuncionarioRepository.GetPdvsId(funcionario.IDFuncionario), funcionario);
+                }
             }
-
-
 
         }
 
@@ -63,13 +67,6 @@ namespace ProjetoTcs.RegraNegocios
             return TimeSpan.Zero;
         }
 
-        //public Fornecedor UpdateFornecedor(Fornecedor fornecedor)
-        //{
-        //    this.fornecedores[this.fornecedores.IndexOf(fornecedor)] = fornecedor;
-        //    return fornecedor;
-        //}
-
-
 
         public Funcionario Destino(int idFuncionario)
         {
@@ -83,7 +80,7 @@ namespace ProjetoTcs.RegraNegocios
         public void PopularDestino(List<PdvFuncionario> pdvFuncionarios, Funcionario funcionario)
         {
             List<Rota> rotas = new List<Rota>();
-            
+
             if (funcionario != null)
             {
                 var idfuncionario = funcionario.IDEndereco;
@@ -108,7 +105,12 @@ namespace ProjetoTcs.RegraNegocios
 
             var lista = OrdenaRemoveLista(pdvFuncionarios, funcionario);
 
-          
+            if (lista == null || lista.Count <= 0)
+            {
+                return;
+            }
+            else
+            {
                 while (lista.FirstOrDefault() != null)
                 {
                     VerificarEndereco(mUltimoEndereco, pdvFuncionarios, funcionario, data);
@@ -116,14 +118,13 @@ namespace ProjetoTcs.RegraNegocios
                 }
                 data = data.AddDays(1);
                 PopularDestino(pdvFuncionarios, funcionario);
-            
-           
-          
+            }
+
         }
 
         public List<PdvFuncionario> OrdenaRemoveLista(List<PdvFuncionario> lista, Funcionario funcionario)
         {
-            
+
             var a = destinos.OrderBy(x => x.Tempo).ToList();
             if (a.FirstOrDefault() != null)
             {
@@ -133,11 +134,11 @@ namespace ProjetoTcs.RegraNegocios
                 destinos.Clear();
                 return lista;
             }
-          
+
             return null;
         }
 
-        public List<Destino> VerificarEndereco(Destino pdvDestinoMelhor, List<PdvFuncionario> listaPdvFuncionario, Funcionario funcionario,DateTime data)
+        public List<Destino> VerificarEndereco(Destino pdvDestinoMelhor, List<PdvFuncionario> listaPdvFuncionario, Funcionario funcionario, DateTime data)
         {
 
             foreach (var t in listaPdvFuncionario)
@@ -169,7 +170,7 @@ namespace ProjetoTcs.RegraNegocios
             return false;
         }
 
-        public void AdicionarRota(int IdFuncionario, int IdPdvFuncionario,DateTime data)
+        public void AdicionarRota(int IdFuncionario, int IdPdvFuncionario, DateTime data)
         {
             Rota rota = new Rota();
             RotaRepository rotaRepository = new RotaRepository();

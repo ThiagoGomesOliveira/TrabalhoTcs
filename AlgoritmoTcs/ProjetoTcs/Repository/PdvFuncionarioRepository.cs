@@ -54,11 +54,13 @@ namespace ProjetoTcs.Repository
         public List<PdvFuncionario> GetPdvsId(int idFuncionario)
         {
 
-            string sql = @"SELECT IDPDVFUNCIONARIO , NOMEEMPRESA,
-                                  INICIOATENDIMENTO, FIMATENDIMENTO,
-                                  TEMPOVISITACAO, IDENDERECO ,IDFUNCIONARIO
-                             FROM PDVFUNCIONARIO
-                            WHERE IDFUNCIONARIO = @ID";
+            string sql = @"SELECT P.IDPDVFUNCIONARIO ,P.NOMEEMPRESA,
+                                  P.INICIOATENDIMENTO,P.FIMATENDIMENTO,
+                                  P.TEMPOVISITACAO,   P.IDENDERECO ,P.IDFUNCIONARIO
+                             FROM PDVFUNCIONARIO AS P
+                            WHERE P.IDFUNCIONARIO = @ID
+                              AND NOT EXISTS (SELECT R.IDROTA FROM ROTA AS R 
+                                              WHERE R.IDPDVFUNCIONARIO = P.IDPDVFUNCIONARIO)";
             using (var context = new SqlConnection(StringConnection))
             {
                 var cmd = new SqlCommand(sql, context);
@@ -243,6 +245,94 @@ namespace ProjetoTcs.Repository
 
                     throw p;
                 }
+            }
+        }
+        public bool VerificaExistenciaPdvnaRota()
+        {
+            using (var context = new  SqlConnection(StringConnection))
+            {
+                string aQuery = @"
+                    SELECT  
+                            P.IDPDVFUNCIONARIO,
+                            P.INICIOATENDIMENTO,
+                            P.FIMATENDIMENTO,
+                            P.TEMPOVISITACAO,
+                            P.IDENDERECO,
+                            P.IDFUNCIONARIO
+                      FROM PdvFuncionario AS P
+                     WHERE P.IdPdvFuncionario > 0 
+                       AND NOT EXISTS (SELECT R.IDROTA 
+                                         FROM Rota AS R
+                                        WHERE R.IdPdvFuncionario = P.IdPdvFuncionario)";
+                SqlCommand cmd = new SqlCommand(aQuery,context);
+
+                try
+                {
+                    context.Open();
+
+                    using (var reader = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                    {
+                        if (reader.HasRows)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                catch (Exception p)
+                {
+
+                    throw p;
+                }
+                return false;
+            }
+        }
+        public  List<PdvFuncionario> PdvSemRotas()
+        {
+            string aQuery = @"
+                    SELECT  
+                            P.IDPDVFUNCIONARIO,
+                            P.INICIOATENDIMENTO,
+                            P.FIMATENDIMENTO,
+                            P.TEMPOVISITACAO,
+                            P.IDENDERECO,
+                            P.IDFUNCIONARIO
+                      FROM PdvFuncionario AS P
+                     WHERE P.IdPdvFuncionario > 0 
+                       AND NOT EXISTS (SELECT R.IDROTA 
+                                         FROM Rota AS R
+                                        WHERE R.IdPdvFuncionario = P.IdPdvFuncionario)";
+          
+            using (var context = new SqlConnection(StringConnection))
+            {
+                var cmd = new SqlCommand(aQuery, context);
+                List<PdvFuncionario> lista = new List<PdvFuncionario>();
+                PdvFuncionario e = null;
+                try
+                {
+
+                    context.Open();
+                    using (var reader = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                    {
+                        while (reader.Read())
+                        {
+                            e = new PdvFuncionario();
+                            e.IdPdvFuncionario = (int)reader["IDPDVFUNCIONARIO"];
+                            e.NomeEmpresa = reader["NOMEEMPRESA"].ToString();
+                            e.InicioAtendimento = (TimeSpan)reader["INICIOATENDIMENTO"];
+                            e.FimAtendimento = (TimeSpan)reader["FIMATENDIMENTO"];
+                            e.FimAtendimento = (TimeSpan)reader["TEMPOVISITACAO"];
+                            e.IdEndereco = (int)reader["IDENDERECO"];
+                            e.IdFuncionario = (int)reader["IDFUNCIONARIO"];
+                            lista.Add(e);
+                        }
+                    }
+                }
+                catch (Exception p)
+                {
+
+                    throw p;
+                }
+                return lista;
             }
         }
     }
