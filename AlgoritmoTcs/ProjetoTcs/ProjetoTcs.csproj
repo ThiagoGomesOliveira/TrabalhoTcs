@@ -126,6 +126,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\EnderecoController.cs" />
+    <Compile Include="Controllers\RotaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -134,12 +135,14 @@
     <Compile Include="Models\Funcionario.cs" />
     <Compile Include="Models\PdvFuncionario.cs" />
     <Compile Include="Models\Rota.cs" />
+    <Compile Include="Models\RotaDosFuncionarios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegraNegocios\Algoritmo.cs" />
     <Compile Include="Repository\EnderecoRepository.cs" />
     <Compile Include="Repository\FuncionarioRepository.cs" />
     <Compile Include="Repository\PdvFuncionarioRepository.cs" />
     <Compile Include="Repository\Repository.cs" />
+    <Compile Include="Repository\RotaDosFunionariosRepository.cs" />
     <Compile Include="Repository\RotaRepository.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +152,8 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Endereco\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Rota\Index.cshtml" />
+    <Content Include="Views\Rota\Post.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

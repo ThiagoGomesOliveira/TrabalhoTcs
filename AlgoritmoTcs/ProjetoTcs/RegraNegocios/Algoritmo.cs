@@ -89,9 +89,9 @@ namespace ProjetoTcs.RegraNegocios
                 {
                     Destino d = new Destino();
                     d.PdvFuncionario = t;
-                    d.Tempo = Distance(DePara(idfuncionario), DePara(t.IdEndereco)) + TempoVisita(DePara(t.IdEndereco));
+                    d.Tempo = Distance(DePara(idfuncionario), DePara(t.IdEndereco)) ;
                     d.Data = data;
-                    var jornada = ExisteTempoJornadaFuncionario(d.Tempo);
+                    var jornada = ExisteTempoJornadaFuncionario(d.Tempo + TempoVisita(DePara(t.IdEndereco)));
                     if (jornada)
                     {
                         var pdvPossivel = VerificarHorarioAtendimentoPdv(t, funcionario);
@@ -145,7 +145,7 @@ namespace ProjetoTcs.RegraNegocios
             {
                 Destino d = new Destino();
                 d.PdvFuncionario = t;
-                d.Tempo = Distance(DePara(pdvDestinoMelhor.PdvFuncionario.IdEndereco), DePara(t.IdEndereco)) + TempoVisita(DePara(t.IdEndereco));
+                d.Tempo = Distance(DePara(pdvDestinoMelhor.PdvFuncionario.IdEndereco), DePara(t.IdEndereco)) ;
                 d.Data = data;
                 var pdvPossivel = VerificarHorarioAtendimentoPdv(t, funcionario);
                 if (pdvPossivel != null)

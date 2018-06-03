@@ -50,7 +50,7 @@ namespace ProjetoTcs.Repository
                 }
             }
         }
-        
+
 
         public override List<Rota> GetAll()
         {
@@ -108,7 +108,7 @@ namespace ProjetoTcs.Repository
                             {
                                 e = new Rota();
                                 e.IDRota = (int)reader["IDROTA"];
-                                e.IDPdvFuncionario =(int) reader["IDPDVFUNCIONARIO"];
+                                e.IDPdvFuncionario = (int)reader["IDPDVFUNCIONARIO"];
                                 e.IDFuncionario = (int)reader["IDFUNCIONARIO"];
                                 e.DataAtendimento = (DateTime)reader["DATAATENDIMENTO"];
                             }
@@ -131,7 +131,7 @@ namespace ProjetoTcs.Repository
                 string sql = @"INSERT INTO ROTA (IDPDVFUNCIONARIO,IDFUNCIONARIO,DATAATENDIMENTO) 
                                VALUES (@IDPDVFUNCIONARIO,@IDFUNCIONARIO,@DATAATENDIMENTO)";
                 SqlCommand cmd = new SqlCommand(sql, context);
-                cmd.Parameters.AddWithValue("@IDPDVFUNCIONARIO",entity.IDPdvFuncionario);
+                cmd.Parameters.AddWithValue("@IDPDVFUNCIONARIO", entity.IDPdvFuncionario);
                 cmd.Parameters.AddWithValue("@IDFUNCIONARIO", entity.IDFuncionario);
                 cmd.Parameters.AddWithValue("@DATAATENDIMENTO", entity.DataAtendimento);
                 try
@@ -160,7 +160,7 @@ namespace ProjetoTcs.Repository
                 cmd.Parameters.AddWithValue("@ID", entity.IDRota);
                 cmd.Parameters.AddWithValue("@IDPDVFUNCIONARIO", entity.IDPdvFuncionario);
                 cmd.Parameters.AddWithValue("@IDFUNCIONARIO", entity.IDPdvFuncionario);
-                cmd.Parameters.AddWithValue("@DATAATENDIMENTO",entity.DataAtendimento);
+                cmd.Parameters.AddWithValue("@DATAATENDIMENTO", entity.DataAtendimento);
                 try
                 {
                     context.Open();
@@ -173,5 +173,46 @@ namespace ProjetoTcs.Repository
                 }
             }
         }
+
+        public List<Rota> BuscarRotas(DateTime dataInicio, DateTime dataFim)
+        {
+            string sql = @"SELECT  IDROTA,  IDPDVFUNCIONARIO, IDFUNCIONARIO,DATAATENDIMENTO
+                             FROM  ROTA  
+                             WHERE DATAATENDIMENTO >= @DATAINICIO
+                               AND DATAATENDIMENTO <= @DATAFIM";
+            using (var context = new SqlConnection(StringConnection))
+            {
+                var cmd = new SqlCommand(sql, context);
+                cmd.Parameters.AddWithValue("@DATAINICIO", dataInicio);
+                cmd.Parameters.AddWithValue("@DATAFIM", dataFim);
+                List<Rota> lista = new List<Rota>();
+                Rota e = null;
+                try
+                {
+
+                    context.Open();
+                    using (var reader = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                    {
+                        while (reader.Read())
+                        {
+                            e = new Rota();
+                            e.IDRota = (int)reader["IDROTA"];
+                            e.IDPdvFuncionario = (int)reader["IDPDVFUNCIONARIO"];
+                            e.IDFuncionario = (int)reader["IDFUNCIONARIO"];
+                            e.DataAtendimento = (DateTime)reader["DATAATENDIMENTO"];
+                            lista.Add(e);
+                        }
+                    }
+                }
+                catch (Exception p)
+                {
+
+                    throw p;
+                }
+                return lista;
+            }
+
+        }
     }
 }
+   

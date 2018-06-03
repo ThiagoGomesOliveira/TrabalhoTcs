@@ -1,0 +1,43 @@
+﻿@model IEnumerable<ProjetoTcs.Models.RotaDosFuncionarios>
+
+@{
+    ViewBag.Title = "Post";
+}
+
+<h2>Resultado</h2>
+
+
+<table class="table">
+
+   
+    <tbody>
+        <tr>
+            <td style="background-color:#999"> Codigo Rota</td>
+            <td style="background-color:#999"> Nome PdvFuncionario</td>
+            <td style="background-color:#999"> Cidade</td>
+            <td style="background-color:#999"> Rua </td>
+            <td style="background-color:#999"> Funcionário</td>
+            <td style="background-color:#999"> Data Atendimento</td>
+        </tr>
+        @if (Model.FirstOrDefault() != null)
+            {
+                foreach (var rota in Model)
+                {
+                <tr>
+                    <td>@rota.IdRota</td>
+                    <td>@rota.PdvFuncionario</td>
+                    <td>@rota.Cidade</td>
+                    <td>@rota.Rua</td>
+                    <td>@rota.Funcionario</td>
+                    <td>@rota.DataAtendimento</td>
+
+                </tr>
+
+            }
+        }
+
+    </tbody>
+</table>
+<div>
+    @Html.ActionLink("Voltar para Lista", "Index")
+</div>
