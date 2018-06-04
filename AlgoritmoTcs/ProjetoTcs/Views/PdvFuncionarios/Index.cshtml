@@ -1,0 +1,86 @@
+﻿@model IEnumerable<ProjetoTcs.Models.RestricoesPdv>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h3>Pdv/Tempo Visitação/Endereço</h3>
+<table class="hitler">
+    <tr class="func">
+        <td class="func">Funcionario</td>
+        <td class="func">Jornada</td>
+    </tr>
+    <tr class="func">
+        <td class="func">@ViewBag.Nome</td>
+        <td class="func">@ViewBag.Jornada</td>
+    </tr>
+</table>
+
+
+<div class="panel-heading">
+    <h2></h2>
+</div>
+
+
+<div class="panel-body">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <td style="background-color:#999"> Nome Pdv (Supermercado)</td>
+                <td style="background-color:#999"> Inicio Atendimento</td>
+                <td style="background-color:#999"> Tempo Visitação</td>
+                <td style="background-color:#999"> Cidade </td>
+                <td style="background-color:#999"> Rua</td>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.FirstOrDefault() != null)
+            {
+                foreach (var rota in Model)
+                {
+                    <tr>
+                        <td>@rota.NomeEmpresa</td>
+                        <td>@rota.InicioAtendimento</td>
+                        <td>@rota.FimAtendimento</td>
+                        <td>@rota.Cidade</td>
+                        <td>@rota.Rua</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="panel-footer panel-info">
+  
+</div>
+<style>
+    .hitler, .fun {
+        border: solid 1px #000;
+        padding: 5px;
+    }
+</style>
+
+@section styles{
+    <link href="@Url.Content("~/content/DataTables/css/dataTables.bootstrap.css")" rel="stylesheet" />
+   
+
+}
+
+
+@section ScriptPage {
+    <script type="text/javascript" src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="@Url.Content("~/scripts/DataTables/jquery.dataTables.js")"></script>
+    <script src="@Url.Content("~/scripts/DataTables/dataTables.bootstrap.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.table').dataTable({
+                "language": {
+                    "url": "https://cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
+                }
+
+            });
+            "order"[[1, "asc"]]
+        });
+    </script>
+}

@@ -17,14 +17,14 @@ namespace ProjetoTcs.Controllers
             
             return View(rotaFunc.GetAll());
         }
+
         [HttpPost]
         public  ActionResult Post(FormCollection form)
             {
             
             var dataInicio = form["dataInicio"];
             var dataFim = form["dataFim"];
-            
-            
+
             RotaDosFunionariosRepository rotaFunc = new RotaDosFunionariosRepository();
             var teste = rotaFunc.BuscarRotas(Convert.ToDateTime(dataInicio),Convert.ToDateTime(dataFim));
 
