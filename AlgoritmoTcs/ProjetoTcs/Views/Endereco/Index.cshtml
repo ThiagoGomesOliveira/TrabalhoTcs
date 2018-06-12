@@ -1,43 +1,99 @@
-﻿@model IEnumerable<ProjetoTcs.Models.Endereco>
-
+﻿
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<Html>
+<head>
+    <style>
+        table {
+            border: 1px #c0c0c0 solid;
+            width: 100%;
+        }
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-       
-        <th>
-            @Html.DisplayNameFor(model => model.Rua)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Cidade)
-        </th>
-        <th></th>
-    </tr>
+            table th {
+                background-color: #00f;
+                color: #fff;
+            }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.IDEndereco)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Rua)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Cidade)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
-}
+            table td {
+                background-color: #f0f0f0;
+                color: #0c0c0c;
+            }
+    </style>
 
-</table>
+    <script type="text/javascript">
+        function adicionarLinha() {
+            var local = document.getElementById('tabela');
+            var tblBody = local.tBodies[0];
+            var newRow = tblBody.insertRow(-1);
+            var newCell0 = newRow.insertCell(0);
+            newCell0.innerHTML = '<td>Coluna 1 Nova</td>';
+            var newCell1 = newRow.insertCell(1);
+            newCell1.innerHTML = '<td>Coluna 2 Nova</td>';
+            var newCell2 = newRow.insertCell(2);
+            newCell2.innerHTML = '<td>Coluna 3 Nova</td>';
+        }
+
+
+        function CriarTabela() {
+            var novatabela = document.createElement("table");
+            var cabecalho = document.createElement("thead");
+            var tr = document.createElement("tr");
+            var corpo = document.createElement("tbody");
+            var coluna = document.createElement("th");
+
+
+            novatabela.appendChild(cabecalho);
+            cabecalho.appendChild(tr);
+            tr.appendChild(coluna);
+            tr.appendChild(coluna);
+            tr.appendChild(coluna);
+            novatabela.appendChild(corpo);
+          
+            
+
+            document.getElementById("teste").appendChild(novatabela);
+
+        }
+
+    </script>
+</head>
+<body>
+
+
+    <div id="teste">
+
+    </div>
+
+    @*<table style="width:100%">
+        <tr>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Age</th>
+        </tr>
+        <tr>
+            <td>Jill</td>
+            <td>Smith</td>
+            <td>50</td>
+        </tr>
+        <tr>
+            <td>Eve</td>
+            <td>Jackson</td>
+            <td>94</td>
+        </tr>
+    </table>*@
+
+
+    @*<table id="tabela">
+            <tbody>
+                <tr>
+                    <td>Coluna 1</td>
+                    <td>Coluna 2</td>
+                    <td>Coluna 3</td>
+                </tr>
+            </tbody>
+        </table>*@
+    <input type="button" onclick="CriarTabela();">
+</body>
+</Html>

@@ -5,48 +5,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
 
 namespace ProjetoTcs.Controllers
 {
-    public class RotaController : Controller
+    public class DestinoController : Controller
     {
-        // GET: Rota
+        // GET: Destino
         public ActionResult Index()
         {
-            RotaDosFunionariosRepository rotaFunc = new RotaDosFunionariosRepository();
-            return View(rotaFunc.GetAll());
+            DestinoRepository destino = new DestinoRepository();
+            FuncionarioEnderecoRepository funcionario = new FuncionarioEnderecoRepository();
+            FuncionarioEndereco func = funcionario.GetById(1);
+            ViewBag.Nome = func.NomeFuncionario;
+            ViewBag.Cidade = func.Cidade;
+            ViewBag.Rua = func.Rua;
+            return View(destino.GetAll());
         }
 
-      
-        [HttpPost]
-        public  ActionResult Post(FormCollection form)
-            {
-            
-            var dataInicio = form["dataInicio"];
-            var dataFim = form["dataFim"];
-
-            RotaDosFunionariosRepository rotaFunc = new RotaDosFunionariosRepository();
-            var teste = rotaFunc.BuscarRotas(Convert.ToDateTime(dataInicio),Convert.ToDateTime(dataFim));
-
-         
-            return View(teste);
-
-        }
-
-
-            // GET: Rota/Details/5
-            public ActionResult Details(int id)
+        // GET: Destino/Details/5
+        public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: Rota/Create
+        // GET: Destino/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Rota/Create
+        // POST: Destino/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -62,13 +52,13 @@ namespace ProjetoTcs.Controllers
             }
         }
 
-        // GET: Rota/Edit/5
+        // GET: Destino/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Rota/Edit/5
+        // POST: Destino/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -84,13 +74,13 @@ namespace ProjetoTcs.Controllers
             }
         }
 
-        // GET: Rota/Delete/5
+        // GET: Destino/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Rota/Delete/5
+        // POST: Destino/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {

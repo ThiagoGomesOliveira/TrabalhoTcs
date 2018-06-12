@@ -1,4 +1,5 @@
 ﻿using ProjetoTcs.Models;
+using ProjetoTcs.RegraNegocios;
 using ProjetoTcs.Repository;
 using System;
 using System.Collections.Generic;
@@ -10,17 +11,43 @@ namespace ProjetoTcs.Controllers
 {
     public class PdvFuncionariosController : Controller
     {
+      
+        public PdvFuncionariosController()
+        {
+          
+        }
+      
+       
+
+        public ActionResult Log()
+        {
+
+            return RedirectToAction("Index","Destino"); 
+        }
+
         // GET: PdvFuncionarios
         public ActionResult Index()
         {
-            FuncionarioRepository funcionario = new FuncionarioRepository();
-            Funcionario func = funcionario.GetById(1);
-            ViewBag.Nome = func.Nome;
+            FuncionarioEnderecoRepository funcionario = new FuncionarioEnderecoRepository();
+            FuncionarioEndereco func = funcionario.GetById(1);
+            ViewBag.Nome = func.NomeFuncionario;
             ViewBag.Jornada = func.JornadaTrabalho;
             ViewBag.InicioJornada = func.InicioJornada;
+            ViewBag.Cidade = func.Cidade;
+            ViewBag.Rua = func.Rua;
             RestricoesPdvRepository Listar = new RestricoesPdvRepository();
             return View(Listar.GetAll());
         }
+       
+        public ActionResult  GerarRota()
+        {
+            Algoritmo algoritmo = new Algoritmo();
+            algoritmo.VerificarDestino();
+            return RedirectToAction("Index");
+        }
+
+   
+
 
         // GET: PdvFuncionarios/Details/5
         public ActionResult Details(int id)
@@ -93,5 +120,9 @@ namespace ProjetoTcs.Controllers
                 return View();
             }
         }
+
+      
+
+       
     }
 }

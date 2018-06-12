@@ -357,10 +357,10 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\Endereco\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DestinoController.cs" />
     <Compile Include="Controllers\EnderecoController.cs" />
     <Compile Include="Controllers\PdvFuncionariosController.cs" />
     <Compile Include="Controllers\RotaController.cs" />
@@ -370,13 +370,16 @@
     <Compile Include="Models\Destino.cs" />
     <Compile Include="Models\Endereco.cs" />
     <Compile Include="Models\Funcionario.cs" />
+    <Compile Include="Models\FuncionarioEndereco.cs" />
     <Compile Include="Models\PdvFuncionario.cs" />
     <Compile Include="Models\RestricoesPdv.cs" />
     <Compile Include="Models\Rota.cs" />
     <Compile Include="Models\RotaDosFuncionarios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegraNegocios\Algoritmo.cs" />
+    <Compile Include="Repository\DestinoRepository.cs" />
     <Compile Include="Repository\EnderecoRepository.cs" />
+    <Compile Include="Repository\FuncionarioEnderecoRepository.cs" />
     <Compile Include="Repository\FuncionarioRepository.cs" />
     <Compile Include="Repository\PdvFuncionarioRepository.cs" />
     <Compile Include="Repository\Repository.cs" />
@@ -389,11 +392,12 @@
     <Content Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Endereco\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Rota\Index.cshtml" />
     <Content Include="Views\Rota\Post.cshtml" />
     <Content Include="Views\PdvFuncionarios\Index.cshtml" />
+    <Content Include="Views\Destino\Index.cshtml" />
+    <Content Include="Views\Endereco\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

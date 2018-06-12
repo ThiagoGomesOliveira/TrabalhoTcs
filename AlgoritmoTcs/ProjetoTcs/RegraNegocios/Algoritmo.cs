@@ -1,4 +1,5 @@
-﻿using ProjetoTcs.Models;
+﻿using ProjetoTcs.Controllers;
+using ProjetoTcs.Models;
 using ProjetoTcs.Repository;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,9 @@ namespace ProjetoTcs.RegraNegocios
         private TimeSpan TempoMaroto;
         private Destino mUltimoEndereco;
         private DateTime data = DateTime.Today;
+        DestinoRepository destinoRepositorio = new DestinoRepository();
+
+    
 
         public void VerificarDestino()
         {
@@ -21,6 +25,7 @@ namespace ProjetoTcs.RegraNegocios
             Funcionario funcionario = new Funcionario();
             PdvFuncionarioRepository pdvFuncionarioRepository = new PdvFuncionarioRepository();
             FuncionarioRepository funcRepositorio = new FuncionarioRepository();
+            
 
             var listaFuncionario = funcRepositorio.GetAll();
 
@@ -98,11 +103,12 @@ namespace ProjetoTcs.RegraNegocios
                         if (pdvPossivel != null)
                         {
                             destinos.Add(d);
+                            destinoRepositorio.Save(d);
                         }
                     }
                 }
             }
-
+           
             var lista = OrdenaRemoveLista(pdvFuncionarios, funcionario);
 
             if (lista == null || lista.Count <= 0)
@@ -129,6 +135,7 @@ namespace ProjetoTcs.RegraNegocios
             if (a.FirstOrDefault() != null)
             {
                 mUltimoEndereco = a[0];
+                
                 AdicionarRota(funcionario.IDFuncionario, mUltimoEndereco.PdvFuncionario.IdPdvFuncionario, mUltimoEndereco.Data);
                 lista.Remove(mUltimoEndereco.PdvFuncionario);
                 destinos.Clear();
@@ -151,6 +158,7 @@ namespace ProjetoTcs.RegraNegocios
                 if (pdvPossivel != null)
                 {
                     destinos.Add(d);
+                    destinoRepositorio.Save(d);
                 }
 
             }
@@ -274,12 +282,16 @@ namespace ProjetoTcs.RegraNegocios
                 TimeSpan tempo = new TimeSpan(0, 07, 00);
                 return tempo;
             }
-
+            if (StartAddress.Equals("R. Humberto de Campos, 77 - Velha") && EndAddress.Equals("R. Amazonas, 466 - Garcia"))
+            {
+                TimeSpan tempo = new TimeSpan(0, 07, 00);
+                return tempo;
+            }
             TimeSpan t = new TimeSpan(0, 00, 00);
             return t;
         }
 
-
+       
 
     }
 

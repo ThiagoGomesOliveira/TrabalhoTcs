@@ -13,7 +13,9 @@ namespace ProjetoTcs.Models
         public string Cidade{ get; set; }
         public string Rua { get; set; }
         public DateTime DataAtendimento { get; set; }
+        public TimeSpan HorarioAtendimento { get; set; }
 
-
+        
+       
     }
 }

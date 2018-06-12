@@ -3,17 +3,27 @@
     ViewBag.Title = "Index";
 }
 
-<h3>Pdv/Tempo Visitação/Endereço</h3>
-<table class="hitler">
-    <tr class="func">
-        <td class="func">Funcionario</td>
-        <td class="func">Jornada</td>
+<h3 style="text-align:center">Pdv/Funcionario/Endereço</h3>
+<h6>Tabela Funcionário</h6>
+
+
+<table style="width:100%">
+    <tr>
+        <td style="background-color:#999">Funcionário</td>
+        <td style="background-color:#999">Jornada</td>
+        <td style="background-color:#999">Inicio/Jornada de Trabalho</td>
+        <td style="background-color:#999">Cidade</td>
+        <td style="background-color:#999">Rua</td>
     </tr>
-    <tr class="func">
-        <td class="func">@ViewBag.Nome</td>
-        <td class="func">@ViewBag.Jornada</td>
+    <tr>
+        <td>@ViewBag.Nome</td>
+        <td>@ViewBag.Jornada</td>
+        <td>@ViewBag.InicioJornada</td>
+        <td>@ViewBag.Cidade</td>
+        <td>@ViewBag.Rua</td>
     </tr>
 </table>
+
 
 
 <div class="panel-heading">
@@ -30,7 +40,7 @@
                 <td style="background-color:#999"> Tempo Visitação</td>
                 <td style="background-color:#999"> Cidade </td>
                 <td style="background-color:#999"> Rua</td>
-                
+
             </tr>
         </thead>
         <tbody>
@@ -51,11 +61,16 @@
     </table>
 </div>
 
-<div class="panel-footer panel-info">
-  
+<div class="panel-footer panel-info"></div>
+<div style="text-align:left">
+    @Html.ActionLink("Gerar Rota ","GerarRota","PdvFuncionario", new { @class = "btn btn-warning " })
+    @Html.ActionLink("Tela Log","Log", new { @class = "btn btn-primary " })
 </div>
+
+    
+
 <style>
-    .hitler, .fun {
+    table, td, th, tfoot {
         border: solid 1px #000;
         padding: 5px;
     }
@@ -63,7 +78,7 @@
 
 @section styles{
     <link href="@Url.Content("~/content/DataTables/css/dataTables.bootstrap.css")" rel="stylesheet" />
-   
+
 
 }
 
